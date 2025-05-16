@@ -8,6 +8,7 @@ import swaggerFile from './swagger/doc/swagger.json';
 import ServerResponse from './utils/ServerResponse';
 import router from './routes';
 import morganLogger from './loggers/logger';
+import { startParkingSlotAvailabilityJob } from './utils/parkingSlotAvailabilityJob';
 
 config();
 
@@ -27,6 +28,9 @@ app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use("*", (req, res) => {
     return ServerResponse.error(res, "Route not found")
 })
+
+//run app scheduler to update parking slot availability
+startParkingSlotAvailabilityJob()
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
