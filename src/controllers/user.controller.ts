@@ -26,14 +26,14 @@ const createUser = async (req: Request, res: Response) => {
         telephone,
       },
     });
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET_KEY as string,
-      { expiresIn: "3d" }
-    );
+    // const token = jwt.sign(
+    //   { id: user.id },
+    //   process.env.JWT_SECRET_KEY as string,
+    //   { expiresIn: "3d" }
+    // );
     return ServerResponse.created(res, "User created successfully", {
       user,
-      token,
+      //token,
     });
   } catch (error: any) {
     console.log("error", error);

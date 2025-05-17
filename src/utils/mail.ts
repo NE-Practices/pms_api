@@ -24,7 +24,7 @@ const sendAccountVerificationEmail = async (email: string, names: string, verifi
         const info = transporter.sendMail({
             from: process.env.MAIL_USER,
             to: email,
-            subject: "NE NodeJS Account Verification",
+            subject: "NE PMS Account Verification",
             html:
                 `
             <!DOCTYPE html>
@@ -32,10 +32,9 @@ const sendAccountVerificationEmail = async (email: string, names: string, verifi
                 <body>
                     <h2>Dear ${names}, </h2>
                     <h2> To verify your account. Click the link below or use the code below</h2>
-                    <strong>Verification code: ${verificationToken}</strong> <br/> or
-                    <a href="${process.env.CLIENT_URL}/auth/verify-email/${verificationToken}" style="color:#4200FE;letter-spacing: 2px;">Click here</a>
+                    <strong>Verification code: ${verificationToken}</strong> <br/>
                     <span>The code expires in 6 hours</span>
-                    <p>Best regards,<br>NE NodeJS</p>
+                    <p>Best regards,<br>NE PMS</p>
                 </body>
             </html>
             `
@@ -56,7 +55,7 @@ const sendPaswordResetEmail = async (email: string, names: string, passwordReset
         const info = transporter.sendMail({
             from: process.env.MAIL_USER,
             to: email,
-            subject: "NE NodeJS Password Reset",
+            subject: "NE PMS Password Reset",
             html:
                 `
             <!DOCTYPE html>
@@ -64,10 +63,9 @@ const sendPaswordResetEmail = async (email: string, names: string, passwordReset
                 <body>
                     <h2>Dear ${names}, </h2>
                     <h2> Click on the link below to change you password or use the code below</h2>
-                    <strong>Reset code: ${passwordResetToken}</strong> <br/> or
-                    <a href="${process.env.CLIENT_URL}/auth/reset-password/${passwordResetToken}" style="color:#4200FE;letter-spacing: 2px;">Click here</a>
+                    <strong>Reset code: ${passwordResetToken}</strong> <br/> 
                     <span>The code expires in 6 hours</span>
-                    <p>Best regards,<br>NE NodeJS</p>
+                    <p>Best regards,<br>NE PMS</p>
                 </body>
             </html>
             `
