@@ -30,7 +30,7 @@ app.use("*", (req, res) => {
 })
 
 //run app scheduler to update parking slot availability
-startParkingSlotAvailabilityJob()
+// startParkingSlotAvailabilityJob()
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
