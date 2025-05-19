@@ -4,6 +4,7 @@ import { CreateParkingRequestDTO, UpdateParkingRequestDTO } from "../dtos/parkin
 import { validate } from "class-validator";
 import { plainToInstance } from "class-transformer";
 import { sendParkingSlotConfirmationEmail, sendRejectionEmail } from "../utils/mail";
+import { generatePrice } from "../utils/generatePrice";
 
 const createParkingRequest = async (req: Request, res: Response) => {
     const dto = plainToInstance(CreateParkingRequestDTO, req.body);
@@ -83,13 +84,17 @@ const approveParkingRequest = async (req: Request, res: Response) => {
             return res.status(400).json({ message: "No available parking slots" });
         }
 
-        // Update request status and assign slot
+        // Calculate price based on checkIn and checkOut
+        const price = generatePrice(request.checkIn, request.checkOut);
+
+        // Update request status, assign slot, and set price
         await prisma.parkingRequest.update({
             where: { id },
             data: {
                 status: "APPROVED",
                 approvedAt: new Date(),
                 parkingSlotId: availableSlot.id,
+                price: price,
             },
         });
 
@@ -98,7 +103,7 @@ const approveParkingRequest = async (req: Request, res: Response) => {
             where: { id: request.userId },
         });
         if (user) {
-            await sendParkingSlotConfirmationEmail(user.email,user.names, availableSlot.slotNumber);
+            await sendParkingSlotConfirmationEmail(user.email,user.names, availableSlot.slotNumber, price);
         }
     
 
@@ -108,7 +113,7 @@ const approveParkingRequest = async (req: Request, res: Response) => {
             data: { isAvailable: false },
         });
 
-        return res.status(200).json({ message: "Request approved", slotNumber: availableSlot.slotNumber });
+        return res.status(200).json({ message: "Request approved", slotNumber: availableSlot.slotNumber, price: price });
     } catch (error) {
         return res.status(500).json({ message: "Error approving request", error });
     }

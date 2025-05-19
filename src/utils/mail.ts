@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
     service: "gmail",
     pool: true,
     host: "smtp.gmail.com",
-    port: 465,
+    port: 587,
     secure: false,
     auth: {
         user: process.env.MAIL_USER,
@@ -31,7 +31,7 @@ const sendAccountVerificationEmail = async (email: string, names: string, verifi
                 <html>
                 <body>
                     <h2>Dear ${names}, </h2>
-                    <h2> To verify your account. Click the link below or use the code below</h2>
+                    <h2> To verify your account use the code below</h2>
                     <strong>Verification code: ${verificationToken}</strong> <br/>
                     <span>The code expires in 6 hours</span>
                     <p>Best regards,<br>NE PMS</p>
@@ -62,7 +62,7 @@ const sendPaswordResetEmail = async (email: string, names: string, passwordReset
                 <html>
                 <body>
                     <h2>Dear ${names}, </h2>
-                    <h2> Click on the link below to change you password or use the code below</h2>
+                    <h2>use the code below to reset your password </h2>
                     <strong>Reset code: ${passwordResetToken}</strong> <br/> 
                     <span>The code expires in 6 hours</span>
                     <p>Best regards,<br>NE PMS</p>
@@ -110,7 +110,7 @@ const sendRejectionEmail = async (email: string, names: string) => {
     return { message: "Unable to send rejection email", status: false };
   }
 };
-const sendParkingSlotConfirmationEmail = async (email: string, names: string, slotNumber: any) => {
+const sendParkingSlotConfirmationEmail = async (email: string, names: string, slotNumber: any, price?: number) => {
   try {
     await transporter.sendMail({
       from: process.env.MAIL_USER,
@@ -123,6 +123,7 @@ const sendParkingSlotConfirmationEmail = async (email: string, names: string, sl
               <h2>Dear ${names},</h2>
               <p>We are pleased to confirm your parking slot reservation.</p>
               <p>Your assigned parking slot number is: <strong>${slotNumber}</strong></p>
+              ${price !== undefined ? `<p>The total price for your parking is: <strong>${price}</strong></p>` : ''}
               <p>Thank you for choosing our service!</p>
               <br/>
               <p>Best regards,<br/>NE Parking Management Team</p>
