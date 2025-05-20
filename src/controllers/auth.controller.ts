@@ -21,7 +21,7 @@ const login = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET_KEY as string,
-      { expiresIn: "3d" }
+      { expiresIn: "7d" }
     );
     return ServerResponse.success(res, "Login successful", { user, token });
   } catch (error) {
