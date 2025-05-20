@@ -103,6 +103,7 @@ model ParkingRequest {
   status         RequestStatus @default(PENDING)
   requestedAt    DateTime      @default(now()) @map("requested_at")
   approvedAt     DateTime?     @map("approved_at")
+  price          Int?          @map("price")
   user           User          @relation(fields: [userId], references: [id])
   vehicle        Vehicle       @relation(fields: [vehicleId], references: [id])
   parkingSlot    ParkingSlot?  @relation(fields: [parkingSlotId], references: [id])
